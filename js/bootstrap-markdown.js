@@ -96,7 +96,7 @@
             btnGroupContainer.append('<button class="'
                                     +btnClass
                                     +' btn-small" title="'
-                                    +button.title
+                                    +this.__trans(button.title)
                                     +'" tabindex="'
                                     +tabIndex
                                     +'" data-provider="'
@@ -108,7 +108,7 @@
                                     +'><i class="'
                                     +button.icon
                                     +'"></i> '
-                                    +btnText
+                                    +this.__trans(btnText)
                                     +'</button>')
 
             // Register handler and callback
@@ -166,6 +166,18 @@
 
       e.preventDefault()
     }
+
+  , __trans: function (string) {
+      if (
+          typeof $.fn.markdown.messages != 'undefined' &&
+          typeof $.fn.markdown.messages[this.$options.locale] != 'undefined' &&
+          typeof $.fn.markdown.messages[this.$options.locale][string] != 'undefined'
+      ) {
+          return $.fn.markdown.messages[this.$options.locale][string];
+      } else {
+          return string;
+      }
+  }
 
   , showEditor: function() {
       var instance = this,
@@ -251,7 +263,9 @@
                               +ns
                               +'" data-handler="'
                               +saveHandler
-                              +'"><i class="icon icon-white icon-ok"></i> Save</button>')
+                              +'"><i class="icon icon-white icon-ok"></i> '
+                              +this.__trans('Save')
+                              +'</button>')
 
           editor.append(editorFooter)
         }
@@ -660,6 +674,8 @@
     })
   }
 
+  $.fn.markdown.messages = {}
+
   $.fn.markdown.defaults = {
     /* Editor Properties */
     autofocus: false,
@@ -667,6 +683,7 @@
     savable:false,
     width: 'inherit',
     height: 'inherit',
+	locale: 'de',
 
     /* Buttons Properties */
     buttons: [
@@ -682,7 +699,7 @@
 
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'strong text'
+              chunk = e.__trans('strong text')
             } else {
               chunk = selected.text
             }
@@ -711,7 +728,7 @@
 
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'emphasized text'
+              chunk = e.__trans('emphasized text')
             } else {
               chunk = selected.text
             }
@@ -740,7 +757,7 @@
 
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'heading text'
+              chunk = e.__trans('heading text')
             } else {
               chunk = selected.text
             }
@@ -776,12 +793,12 @@
 
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'enter link description here'
+              chunk = e.__trans('enter link description here')
             } else {
               chunk = selected.text
             }
 
-            link = prompt('Insert Hyperlink','http://')
+            link = prompt(e.__trans('Insert Hyperlink'),'http://')
 
             if (link != null) {
               // transform selection and set the cursor into chunked text
@@ -802,12 +819,12 @@
 
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'enter image description here'
+              chunk = e.__trans('enter image description here')
             } else {
               chunk = selected.text
             }
 
-            link = prompt('Insert Image Hyperlink','http://')
+            link = prompt(e.__trans('Insert Image Hyperlink'),'http://')
 
             if (link != null) {
               // transform selection and set the cursor into chunked text
@@ -815,7 +832,7 @@
               cursor = selected.start+2
 
               // Set the next tab
-              e.setNextTab('enter image title here')
+              e.setNextTab(e.__trans('enter image title here'))
 
               // Set the cursor
               e.setSelection(cursor,cursor+chunk.length)
@@ -835,7 +852,7 @@
             // transform selection and set the cursor into chunked text
             if (selected.length == 0) {
               // Give extra word
-              chunk = 'list text here'
+              chunk = e.__trans('list text here')
                 
               e.replaceSelection('- '+chunk)
 
