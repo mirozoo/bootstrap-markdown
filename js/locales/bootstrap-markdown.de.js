@@ -24,6 +24,8 @@
 		"blockquote": "Zitat",
 		"Code Sample": "Codebeispiel",
 		"code snippet": "Code-Ausschnitt",
-		"Ordered List": "nummerierte Liste"
+		"Ordered List": "nummerierte Liste",
+		"Ok": "Ok",
+		"Cancel": "Abbrechen"
 	};
 } (jQuery));

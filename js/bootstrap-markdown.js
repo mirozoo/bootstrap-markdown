@@ -872,17 +872,25 @@
               chunk = selected.text
             }
 
-            link = prompt(e.__trans('Insert Hyperlink'),'http://')
+			if (typeof bootbox === 'object') {
+				// Use bootbox if available.
+				link = bootbox.prompt(e.__trans('Insert Hyperlink'), e.__trans('Cancel'), e.__trans('Ok'), insertLink, 'http://');
+			} else {
+				link = prompt(e.__trans('Insert Hyperlink'),'http://');
+				if (link !== null) insertLink(link);
+			}
 
-            if (link != null) {
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection('['+chunk+']('+link+')')
-              cursor = selected.start+1
+            function insertLink(link) {
+                if (link != null) {
+                    // transform selection and set the cursor into chunked text
+                    e.replaceSelection('['+chunk+']('+link+')')
+                    cursor = selected.start+1
 
-              // Set the cursor
-              e.setSelection(cursor,cursor+chunk.length)
+                    // Set the cursor
+                    e.setSelection(cursor,cursor+chunk.length)
+                }
             }
-          }
+		  }
         },{
           name: 'cmdImage',
           title: 'Image',
@@ -898,19 +906,27 @@
               chunk = selected.text
             }
 
-            link = prompt(e.__trans('Insert Image Hyperlink'),'http://')
+			if (typeof bootbox !== 'object') {
+				// Use bootbox if available.
+				link = bootbox.prompt(e.__trans('Insert Image Hyperlink'), e.__trans('Cancel'), e.__trans('Ok'), insertLink, 'http://');
+			} else {
+                link = prompt(e.__trans('Insert Image Hyperlink'),'http://')
+				if (link !== null) insertLink(link);
+			}
 
-            if (link != null) {
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection('!['+chunk+']('+link+' "enter image title here")')
-              cursor = selected.start+2
+            function insertLink(link) {
+                if (link != null) {
+                  // transform selection and set the cursor into chunked text
+                  e.replaceSelection('!['+chunk+']('+link+' "'+e.__trans('enter image title here')+'")')
+                  cursor = selected.start+2
 
-              // Set the next tab
-              e.setNextTab(e.__trans('enter image title here'))
+                  // Set the next tab
+                  e.setNextTab(e.__trans('enter image title here'))
 
-              // Set the cursor
-              e.setSelection(cursor,cursor+chunk.length)
-            }
+                  // Set the cursor
+                  e.setSelection(cursor,cursor+chunk.length)
+                }
+			}
           }
         }]
       },{
