@@ -780,6 +780,80 @@
             // Set the cursor
             e.setSelection(cursor,cursor+chunk.length)
           }
+        },{
+          name: 'cmdBlockquote',
+          title: 'Blockquote',
+          icon: 'icon icon-quote-left',
+          callback: function(e){
+            // Prepend/Give - surround the selection
+            var chunk, cursor, selected = e.getSelection(), content = e.getContent()
+
+            // transform selection and set the cursor into chunked text
+            if (selected.length == 0) {
+              // Give extra word
+              chunk = e.__trans('blockquote')
+                
+              e.replaceSelection('> '+chunk)
+
+              // Set the cursor
+              cursor = selected.start+2
+            } else {
+              if (selected.text.indexOf('\n') < 0) {
+                chunk = selected.text
+
+                e.replaceSelection('> '+chunk)
+
+                // Set the cursor
+                cursor = selected.start+2
+              } else {
+                var list = []
+
+                list = selected.text.split('\n')
+                chunk = list[0]
+
+                $.each(list,function(k,v) {
+                  list[k] = '> '+v
+                })
+
+                e.replaceSelection('\n'+list.join('\n'))
+
+                // Set the cursor
+                cursor = selected.start+4
+              }
+            }
+
+            // Set the cursor
+            e.setSelection(cursor,cursor+chunk.length)
+          }
+        },{
+          name: 'cmdCode',
+          title: 'Code Sample',
+          icon: 'icon icon-code',
+          callback: function(e){
+            // Give/remove * surround the selection
+            var chunk, cursor, selected = e.getSelection(), content = e.getContent()
+
+            if (selected.length == 0) {
+              // Give extra word
+              chunk = e.__trans('code snippet')
+            } else {
+              chunk = selected.text
+            }
+
+            // transform selection and set the cursor into chunked text
+            if (content.substr(selected.start-1,1) == '`' 
+                && content.substr(selected.end,1) == '`' ) {
+              e.setSelection(selected.start-1,selected.end+1)
+              e.replaceSelection(chunk)
+              cursor = selected.start-1
+            } else {
+              e.replaceSelection('`'+chunk+'`')
+              cursor = selected.start+1
+            }
+
+            // Set the cursor
+            e.setSelection(cursor,cursor+chunk.length)
+          }
         }]
       },{
         name: 'groupLink',
@@ -844,7 +918,7 @@
         data: [{
           name: 'cmdList',
           title: 'List',
-          icon: 'icon icon-list',
+          icon: 'icon icon-list-ul',
           callback: function(e){
             // Prepend/Give - surround the selection
             var chunk, cursor, selected = e.getSelection(), content = e.getContent()
@@ -883,7 +957,50 @@
               }
             }
 
-           
+            // Set the cursor
+            e.setSelection(cursor,cursor+chunk.length)
+          }
+        },{
+          name: 'cmdOrderedList',
+          title: 'Ordered List',
+          icon: 'icon icon-list-ol',
+          callback: function(e){
+            // Prepend/Give - surround the selection
+            var chunk, cursor, selected = e.getSelection(), content = e.getContent()
+
+            // transform selection and set the cursor into chunked text
+            if (selected.length == 0) {
+              // Give extra word
+              chunk = e.__trans('list text here')
+                
+              e.replaceSelection('1. '+chunk)
+
+              // Set the cursor
+              cursor = selected.start+3
+            } else {
+              if (selected.text.indexOf('\n') < 0) {
+                chunk = selected.text
+
+                e.replaceSelection('1. '+chunk)
+
+                // Set the cursor
+                cursor = selected.start+3
+              } else {
+                var list = []
+
+                list = selected.text.split('\n')
+                chunk = list[0]
+
+                $.each(list,function(k,v) {
+                  list[k] = (k + 1)+'. '+v
+                })
+
+                e.replaceSelection('\n\n'+list.join('\n'))
+
+                // Set the cursor
+                cursor = selected.start+5
+              }
+            }
 
             // Set the cursor
             e.setSelection(cursor,cursor+chunk.length)

@@ -19,6 +19,11 @@
 		"enter image description here": "Bildbeschreibung hier einfügen",
 		"Insert Image Hyperlink": "Bild einfügen",
 		"enter image title here": "Bildtitel hier einfügen",
-		"list text here": "Listenpunkt"
+		"list text here": "Listenpunkt",
+		"Blockquote": "Zitat",
+		"blockquote": "Zitat",
+		"Code Sample": "Codebeispiel",
+		"code snippet": "Code-Ausschnitt",
+		"Ordered List": "nummerierte Liste"
 	};
 } (jQuery));
