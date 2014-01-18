@@ -616,6 +616,9 @@
         }
       })
 
+      // Trigger the onFocus hook
+      options.onFocus(this);
+
       return this
     }
 
@@ -1051,7 +1054,8 @@
     onShow: function (e) {},
     onPreview: function (e) {},
     onSave: function (e) {},
-    onBlur: function (e) {}
+    onBlur: function (e) {},
+    onFocus: function (e) {}
   }
 
   $.fn.markdown.Constructor = Markdown
