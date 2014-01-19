@@ -427,7 +427,7 @@
       return (
 
           ('selectionStart' in e && function() {
-              e.selectionStart = start
+			  e.selectionStart = start
               e.selectionEnd = end
               return 
           }) ||
@@ -448,7 +448,7 @@
       return (
 
           ('selectionStart' in e && function() {
-              e.value = e.value.substr(0, e.selectionStart) + text + e.value.substr(e.selectionEnd, e.value.length)
+			  e.value = e.value.substr(0, e.selectionStart) + text + e.value.substr(e.selectionEnd, e.value.length)
               // Set cursor to the last replacement end
               e.selectionStart = e.value.length
               return this
@@ -877,21 +877,26 @@
 
 			if (typeof bootbox === 'object') {
 				// Use bootbox if available.
-				link = bootbox.prompt(e.__trans('Insert Hyperlink'), e.__trans('Cancel'), e.__trans('Ok'), insertLink, 'http://');
-			} else {
+				//bootbox.animate(false);
+                var dialog = bootbox.prompt(e.__trans('Insert Hyperlink'), e.__trans('Cancel'), e.__trans('Ok'), insertLink, 'http://');
+			  } else {
 				link = prompt(e.__trans('Insert Hyperlink'),'http://');
 				if (link !== null) insertLink(link);
 			}
 
             function insertLink(link) {
-                if (link != null) {
-                    // transform selection and set the cursor into chunked text
-                    e.replaceSelection('['+chunk+']('+link+')')
-                    cursor = selected.start+1
+                window.setTimeout(function() {
+                    e.$textarea.focus();
 
-                    // Set the cursor
-                    e.setSelection(cursor,cursor+chunk.length)
-                }
+                    if (link != null) {
+                        // transform selection and set the cursor into chunked text
+                        e.replaceSelection('['+chunk+']('+link+')')
+                        cursor = selected.start+1
+
+                        // Set the cursor
+                        e.setSelection(cursor,cursor+chunk.length)
+                    }
+				}, 500);
             }
 		  }
         },{
@@ -909,7 +914,7 @@
               chunk = selected.text
             }
 
-			if (typeof bootbox !== 'object') {
+			if (typeof bootbox === 'object') {
 				// Use bootbox if available.
 				link = bootbox.prompt(e.__trans('Insert Image Hyperlink'), e.__trans('Cancel'), e.__trans('Ok'), insertLink, 'http://');
 			} else {
@@ -918,17 +923,21 @@
 			}
 
             function insertLink(link) {
-                if (link != null) {
-                  // transform selection and set the cursor into chunked text
-                  e.replaceSelection('!['+chunk+']('+link+' "'+e.__trans('enter image title here')+'")')
-                  cursor = selected.start+2
+                window.setTimeout(function() {
+                    e.$textarea.focus();
 
-                  // Set the next tab
-                  e.setNextTab(e.__trans('enter image title here'))
+                    if (link != null) {
+                        // transform selection and set the cursor into chunked text
+                        e.replaceSelection('!['+chunk+']('+link+' "'+e.__trans('enter image title here')+'")')
+                        cursor = selected.start+2
 
-                  // Set the cursor
-                  e.setSelection(cursor,cursor+chunk.length)
-                }
+                        // Set the next tab
+                        e.setNextTab(e.__trans('enter image title here'))
+
+                        // Set the cursor
+                        e.setSelection(cursor,cursor+chunk.length)
+					}
+                }, 500);
 			}
           }
         }]
