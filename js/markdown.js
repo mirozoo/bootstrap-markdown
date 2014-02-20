@@ -1614,12 +1614,13 @@ function convert_tree_to_html( tree, references, options ) {
       jsonml[ 0 ] = "br";
     break;
     case "link":
-      jsonml[ 0 ] = "a";
+      if (attrs.href.substring(0, 4) === "http") attrs.target = "_blank";
+	  jsonml[ 0 ] = "a";
       break;
     case "link_ref":
       jsonml[ 0 ] = "a";
 
-      // grab this ref and clean up the attribute node
+	// grab this ref and clean up the attribute node
       var ref = references[ attrs.ref ];
 
       // if the reference exists, make the link
